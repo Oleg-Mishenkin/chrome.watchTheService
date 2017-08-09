@@ -6,7 +6,7 @@ class ServiceSearcher extends React.Component {
 
         this.state = {
             isBackgroundUpdate: false,
-            currentServiceName: this.props.serviceName || 'Confirmit*'
+            currentServiceName: this.props.serviceName
         }
 
         this.onServiceNameChanged = this.onServiceNameChanged.bind(this);
