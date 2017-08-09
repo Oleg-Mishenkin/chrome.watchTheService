@@ -1,0 +1,21 @@
+{
+  "name": "Service Status",
+  "description": "Extension to track remote windows services",
+  "version": "1.0",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": "icon-128.png",
+    "default_popup": "popup.html"
+  },
+/*   "background":{
+		"scripts":["eventPage.js"],
+		"persistent":false
+	}, */
+  "icons": { "128": "icon-128.png" },
+  "permissions": [
+    "tabs",
+    "alarms",
+    "http://*/*",
+    "storage"
+  ]
+}

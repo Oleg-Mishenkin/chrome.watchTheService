@@ -1,0 +1,63 @@
+html, body {
+    font-size: 14px;
+    min-width: 300px;
+}
+
+.webkit-switch{
+    background-color: #FFF;
+    border: 1px solid #999;
+    border-radius: 2px;
+    color: #FFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0;
+    height: 34px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 80px;
+
+    -webkit-user-select: none;
+    -webkit-appearance: none;
+}
+.webkit-switch:after,
+.webkit-switch:before{
+    background-color: #9bca3e;
+    color: #FFF;
+    content : "On";
+    display: block;
+    font-size: 13px;
+    line-height: 1.5;
+    height: 100%;
+    left: 0;
+    padding: 7px 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 51%; /* This is so the darker color doesn't show through the rounded corners of the knob */
+}
+
+.webkit-switch:after{
+    background-color: #999;
+    content : "Off";
+    left: 0;
+    text-indent: 50%;
+    width: 100%;
+        
+    background: 
+            -webkit-linear-gradient(left, #e6e6e6 0, #FFF 100%) repeat-y 0 0,
+            -webkit-linear-gradient(left, #FFF 0%, #FFF 49%, #999 50%, #999 100%) repeat-y 0 0;
+    
+    background-size: 50% 50%, 100% 100%;
+    background-origin: 50% 50%, 0 0;
+        
+    -webkit-transition: all 0.15s ease;
+    -moz-transition: all 0.15s ease;
+    -ms-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+}
+    
+.webkit-switch:checked:after{
+    left: 50%;    
+}
