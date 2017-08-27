@@ -11,7 +11,7 @@ class App extends React.Component {
 
     this.state = {
       isBackgroundUpdate: false,
-      serviceName: 'Confirmit*',
+      serviceName: 'Google*',
       services: []
     }
 
@@ -20,6 +20,8 @@ class App extends React.Component {
     this.setServiceStatus = this.setServiceStatus.bind(this)
     this.getStorageValue('isBackgroundUpdate')
     this.getStorageValue('serviceName')
+
+    chrome.runtime.connect({ name: "port-from-popup" });
   }
 
   setCurrentServiceName(newName) {
@@ -41,7 +43,7 @@ class App extends React.Component {
 
   getStorageValue(settingName) {
     var that = this;
-    chrome.storage.sync.get(settingName, function(setting) {
+    chrome.storage.sync.get(settingName, function (setting) {
       if (setting != undefined) {
         that.setState(setting);
       }
@@ -49,7 +51,7 @@ class App extends React.Component {
   }
 
   setServiceStatus(serviceName, status) {
-    
+
   }
 
   render() {
@@ -58,7 +60,7 @@ class App extends React.Component {
         <h4>Update services in background</h4>
         <Toggler initSetting={this.state.isBackgroundUpdate} onSettingChange={this.setIsBackgroundUpdate} />
         {/* <HostSearcher /> */}
-        <h4>Start typing service name (regexp syntax supported)</h4>
+        <h4>Start typing service name <br /> (regexp syntax supported)</h4>
         <ServiceSearcher serviceName={this.state.serviceName} onServiceChange={this.setCurrentServiceName} />
         <ServiceList serviceName={this.state.serviceName} onServiceStatusChange={this.setServiceStatus} />
       </div>

@@ -1,8 +1,22 @@
 html, body {
     font-size: 14px;
     min-width: 300px;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
 }
 
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* Toggle styles */
 .webkit-switch{
     background-color: #FFF;
     border: 1px solid #999;
@@ -60,4 +74,82 @@ html, body {
     
 .webkit-switch:checked:after{
     left: 50%;    
+}
+
+/* Other App styles */
+.error {
+    color:red;
+}
+
+.warn {
+    color:yellow;
+}
+
+.success {
+    color:green;
+}
+
+.row {
+    width: 100%;
+    clear: both;
+    padding-top: 4px; 
+    padding-bottom: 4px; 
+    display: inline-block;
+    border-bottom:2px solid #ccc;
+}
+
+.row:before,
+.row:after {
+    display: table;
+    content: " ";
+}
+
+.col-1 {
+    width: 8.3333%;
+    float: left;
+}
+
+.col-2 {
+    width: 16.6666%;
+    float: left;
+}
+
+.col-3 {
+    width: 25%;
+    float: left;
+}
+
+.col-6 {
+    width:50%;
+    float: left;
+}
+
+.col-9 {
+    width: 75%;
+    float: left;
+}
+
+.col-10 {
+    width: 83.3333%;
+    float: left;
+}
+
+.col-12 {
+    width: 100%;
+    float: left;
+}
+
+.button-action {
+    width: 16px;
+    height: 16px;
+}
+
+.start {
+    background-image: url("start.png");;
+    background-size: contain;
+}
+
+.stop {
+    background-image: url("stop.png");;
+    background-size: contain;
 }

@@ -1,7 +1,6 @@
 class ServicesManager {
     constructor(host) {
         this.host = host;
-        this.services = [];
     }
 
     setHost(host) {
@@ -9,15 +8,15 @@ class ServicesManager {
     }
 
     start(serviceName) {
-        return fetch(this.appendUrl(host, `start/${serviceName}`));
+        return fetch(this.appendUrl(this.host, `start/${serviceName}`));
     }
 
     stop(serviceName) {
-        return fetch(this.appendUrl(host, `stop/${serviceName}`));
+        return fetch(this.appendUrlthis.host, `stop/${serviceName}`);
     }
 
     getServices(namepattern) {
-        return fetch(this.appendUrl(host, `all/${namepattern}`));
+        return fetch(this.appendUrl(this.host, `all/${namepattern}`));
     }
 
     appendUrl(url1, url2) {
