@@ -16,7 +16,11 @@ class ServicesManager {
     }
 
     getServices(namepattern) {
-        return fetch(this.appendUrl(this.host, `all/${namepattern}`));
+        return new Promise((resolve, reject) => {
+            fetch(this.appendUrl(this.host, `all/${namepattern}`)).then(function (res) {
+                resolve(res.json());
+            });
+        })
     }
 
     appendUrl(url1, url2) {

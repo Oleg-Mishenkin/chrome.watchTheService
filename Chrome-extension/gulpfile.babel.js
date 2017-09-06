@@ -53,6 +53,7 @@ gulp.task('build', ['copy-manifest', 'popup-js', 'popup-html', 'popup-png' , 'ev
 gulp.task('watch', ['default'], () => {
   gulp.watch('popup/**/*', ['build']);
   gulp.watch('event/**/*', ['build']);
+  gulp.watch('common/**/*', ['build']);
 });
 
 gulp.task('default', ['build']);

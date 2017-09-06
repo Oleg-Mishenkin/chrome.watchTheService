@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { render } from 'react-dom';
 import ServicesManager from './../../../../common/services-manager';
 import ServiceEntry from './serviceEntry';
+import ServiceStatus from './../../../../common/service-status';
 
 class ServiceList extends React.Component {
     constructor(props, context) {
@@ -24,9 +25,7 @@ class ServiceList extends React.Component {
 
     loadServices() {
         var that = this;
-        this.manager.getServices(this.state.serviceName).then(function (res) {
-            return res.json();
-        }).then(function (json) {
+        this.manager.getServices(this.state.serviceName).then(function (json) {
             that.setState({ services: json });
         }).catch(function (error) {
             console.log(error);
@@ -34,12 +33,31 @@ class ServiceList extends React.Component {
         });
     }
 
+    changeServiceStatus(changedService, newStatus) {
+        var currentServices = this.state.services;
+        currentServices.map(function (service) {
+            if (service.name == changedService.name) {
+                service.status = newStatus;
+            }
+        })
+
+        if (newStatus == ServiceStatus.Starting) {
+            this.manager.start(changedService.name);
+        }
+        if (newStatus == ServiceStatus.Stopping) {
+            this.manager.stop(changedService.name);
+        }
+
+        this.setState({ services: currentServices });
+    }
+
     render() {
+        var that = this;
         if (this.state.error)
             return <div className='error'>An error occured during obtaining services list</div>
         else {
             var serviceList = this.state.services.map(function (service) {
-                return <ServiceEntry key={service.name} serviceName={service.name} serviceStatus={service.status} />
+                return <ServiceEntry key={service.name} serviceName={service.name} serviceStatus={service.status} onChangeStatus={(status) => that.changeServiceStatus(service, status)} />
             })
 
             return <ul>{serviceList}</ul>

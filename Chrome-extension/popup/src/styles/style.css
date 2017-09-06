@@ -82,7 +82,7 @@ ul {
 }
 
 .warn {
-    color:yellow;
+    color:orange;
 }
 
 .success {
@@ -124,6 +124,11 @@ ul {
     float: left;
 }
 
+.col-8 {
+    width: 66.6667%;
+    float: left;
+}
+
 .col-9 {
     width: 75%;
     float: left;
@@ -144,12 +149,26 @@ ul {
     height: 16px;
 }
 
-.start {
-    background-image: url("start.png");;
+.image-start {
+    background-image: url("play.png");;
     background-size: contain;
 }
 
-.stop {
+.image-stop {
     background-image: url("stop.png");;
     background-size: contain;
+}
+
+.image-disabled {
+    opacity: 0.5;
+}
+
+.image-container {
+    height: 20px;
+    resize: both;
+    width: 20px;
+}
+
+.image-container:hover {
+    cursor: pointer;
 }

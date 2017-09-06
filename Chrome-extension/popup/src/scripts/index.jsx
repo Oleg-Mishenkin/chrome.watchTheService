@@ -4,50 +4,46 @@ import url from '../styles/style.css';
 import Toggler from './components/toggler';
 import ServiceSearcher from './components/serviceSearcher';
 import ServiceList from './components/serviceList';
+import ChromeStorage from './../../../common/chrome-storage';
 
 class App extends React.Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      isBackgroundUpdate: false,
-      serviceName: 'Google*',
+      isBackgroundUpdate: true,
+      serviceName: 'Microsoft*',
       services: []
     }
+
+    this.chromeStorage = new ChromeStorage();
 
     this.setIsBackgroundUpdate = this.setIsBackgroundUpdate.bind(this)
     this.setCurrentServiceName = this.setCurrentServiceName.bind(this)
     this.setServiceStatus = this.setServiceStatus.bind(this)
-    this.getStorageValue('isBackgroundUpdate')
-    this.getStorageValue('serviceName')
+    this.setChromeStorageCallback = this.setChromeStorageCallback.bind(this)
+    this.getChromeStorageCallback = this.getChromeStorageCallback.bind(this)
+
+    this.chromeStorage.getValue('isBackgroundUpdate', this.getChromeStorageCallback);
+    this.chromeStorage.getValue('serviceName', this.getChromeStorageCallback);
 
     chrome.runtime.connect({ name: "port-from-popup" });
   }
 
   setCurrentServiceName(newName) {
-    var settingName = 'serviceName';
-    this.setStorageValue(settingName, newName);
+    this.chromeStorage.setValue('serviceName', newName, this.setChromeStorageCallback);
   }
 
   setIsBackgroundUpdate(evt) {
-    var settingName = 'isBackgroundUpdate';
-    this.setStorageValue(settingName, !this.state.isBackgroundUpdate);
+    this.chromeStorage.setValue('isBackgroundUpdate', !this.state.isBackgroundUpdate, this.setChromeStorageCallback);
   }
 
-  setStorageValue(settingName, value) {
-    var chromeStorageValue = {};
-    chromeStorageValue[settingName] = value;
-    chrome.storage.sync.set(chromeStorageValue);
-    this.setState(chromeStorageValue);
+  setChromeStorageCallback(setting) {
+    this.setState(setting);
   }
 
-  getStorageValue(settingName) {
-    var that = this;
-    chrome.storage.sync.get(settingName, function (setting) {
-      if (setting != undefined) {
-        that.setState(setting);
-      }
-    });
+  getChromeStorageCallback(setting) {
+    this.setState(setting);
   }
 
   setServiceStatus(serviceName, status) {
