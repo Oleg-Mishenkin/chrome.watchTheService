@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import url from '../styles/style.css';
 import Toggler from './components/toggler';
-import ServiceSearcher from './components/serviceSearcher';
+import ValueSearcher from './components/valueSearcher';
 import ServiceList from './components/serviceList';
 import ChromeStorage from './../../../common/chrome-storage';
 
@@ -12,26 +12,29 @@ class App extends React.Component {
 
     this.state = {
       isBackgroundUpdate: true,
-      serviceName: 'Microsoft*',
+      serviceName: '',
+      hostName: '',
       services: []
     }
 
     this.chromeStorage = new ChromeStorage();
 
-    this.setIsBackgroundUpdate = this.setIsBackgroundUpdate.bind(this)
-    this.setCurrentServiceName = this.setCurrentServiceName.bind(this)
-    this.setServiceStatus = this.setServiceStatus.bind(this)
-    this.setChromeStorageCallback = this.setChromeStorageCallback.bind(this)
-    this.getChromeStorageCallback = this.getChromeStorageCallback.bind(this)
+    this.setIsBackgroundUpdate = this.setIsBackgroundUpdate.bind(this);
+    this.setCurrentServiceName = this.setCurrentServiceName.bind(this);
+    this.setCurrentHostName = this.setCurrentHostName.bind(this);
+    this.setChromeStorageCallback = this.setChromeStorageCallback.bind(this);
 
-    this.chromeStorage.getValue('isBackgroundUpdate', this.getChromeStorageCallback);
-    this.chromeStorage.getValue('serviceName', this.getChromeStorageCallback);
+    this.chromeStorage.getAll(this.setChromeStorageCallback);
 
     chrome.runtime.connect({ name: "port-from-popup" });
   }
 
   setCurrentServiceName(newName) {
     this.chromeStorage.setValue('serviceName', newName, this.setChromeStorageCallback);
+  }
+
+  setCurrentHostName(newName) {
+    this.chromeStorage.setValue('hostName', newName, this.setChromeStorageCallback);
   }
 
   setIsBackgroundUpdate(evt) {
@@ -42,23 +45,20 @@ class App extends React.Component {
     this.setState(setting);
   }
 
-  getChromeStorageCallback(setting) {
-    this.setState(setting);
-  }
-
-  setServiceStatus(serviceName, status) {
-
-  }
-
   render() {
+    var shouldRenderList = this.state.serviceName.length > 0 && this.state.hostName.length > 0;
     return (
       <div>
         <h4>Update services in background</h4>
         <Toggler initSetting={this.state.isBackgroundUpdate} onSettingChange={this.setIsBackgroundUpdate} />
-        {/* <HostSearcher /> */}
+        <h4>Host name</h4>
+        <ValueSearcher valueName={this.state.hostName} onValueChange={this.setCurrentHostName} hint="localhost/WatchTheService/api/services" />
         <h4>Start typing service name <br /> (regexp syntax supported)</h4>
-        <ServiceSearcher serviceName={this.state.serviceName} onServiceChange={this.setCurrentServiceName} />
-        <ServiceList serviceName={this.state.serviceName} onServiceStatusChange={this.setServiceStatus} />
+        <ValueSearcher valueName={this.state.serviceName} onValueChange={this.setCurrentServiceName} hint="Microsoft*" />
+        {shouldRenderList ?
+          <ServiceList serviceName={this.state.serviceName} hostName={this.state.hostName} />
+          : ''
+        }
       </div>
     );
   }

@@ -7,26 +7,25 @@ import ServiceStatus from './../../../../common/service-status';
 class ServiceList extends React.Component {
     constructor(props, context) {
         super(props, context);
-
         this.state = {
             services: [],
-            serviceName: this.props.serviceName || '',
+            serviceName: this.props.serviceName,
+            hostName: this.props.hostName,
             error: false
         }
-
-        this.manager = new ServicesManager('http://localhost:3000/tasks');
 
         this.loadServices();
     }
 
     componentWillReceiveProps(newProps) {
-        this.setState({ serviceName: newProps.serviceName }, this.loadServices);
+        this.setState({ serviceName: newProps.serviceName, hostName: newProps.hostName }, this.loadServices);
     }
 
     loadServices() {
         var that = this;
+        this.manager = new ServicesManager(this.state.hostName);
         this.manager.getServices(this.state.serviceName).then(function (json) {
-            that.setState({ services: json });
+            that.setState({ services: json, error: false });
         }).catch(function (error) {
             console.log(error);
             that.setState({ error: true });
@@ -42,10 +41,17 @@ class ServiceList extends React.Component {
         })
 
         if (newStatus == ServiceStatus.Starting) {
-            this.manager.start(changedService.name);
+            this.manager.start(changedService.name).catch(function (error) {
+                console.log(error);
+                that.setState({ error: true });
+            });
         }
+
         if (newStatus == ServiceStatus.Stopping) {
-            this.manager.stop(changedService.name);
+            this.manager.stop(changedService.name).catch(function (error) {
+                console.log(error);
+                that.setState({ error: true });
+            });
         }
 
         this.setState({ services: currentServices });

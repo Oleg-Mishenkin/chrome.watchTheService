@@ -36,4 +36,9 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
+*.pubxml
+[Bb]in/
+[Oo]bj/
+publish/
+.vs/
 Chrome-extension/build/*

@@ -13,10 +13,11 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 chrome.alarms.onAlarm.addListener(function () {
-    var manager = new ServicesManager('http://localhost:3000/tasks');
     var storage = new ChromeStorage();
 
     storage.getAll(function (settings) {
+        var manager = new ServicesManager(settings.host || 'localhost');
+
         if (isActive || settings.isBackgroundUpdate) {
             manager.getServices(settings.serviceName).then(function (json) {
                 var stoppedServicesNum = json.reduce(function (accumulator, currentValue) {

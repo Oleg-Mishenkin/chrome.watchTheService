@@ -8,18 +8,34 @@ class ServicesManager {
     }
 
     start(serviceName) {
-        return fetch(this.appendUrl(this.host, `start/${serviceName}`));
+        var options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'name': serviceName })
+        };
+        return fetch(this.appendUrl(this.host, `start`));
     }
 
     stop(serviceName) {
-        return fetch(this.appendUrlthis.host, `stop/${serviceName}`);
+        var options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'name': serviceName })
+        };
+        return fetch(this.appendUrl(this.host, `stop`));
     }
 
     getServices(namepattern) {
         return new Promise((resolve, reject) => {
             fetch(this.appendUrl(this.host, `all/${namepattern}`)).then(function (res) {
                 resolve(res.json());
-            });
+            }).catch(reject);
         })
     }
 
