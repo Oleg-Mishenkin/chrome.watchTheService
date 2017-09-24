@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
-import ServiceStatus from './../../../../common/service-status';
+import { ServiceStatus, MapServiceStatus } from './../../../../common/service-status';
 
 function getStatusClassName(status) {
     switch (status) {
-        case 'Running':
+        case ServiceStatus.Running:
             return 'success';
-        case 'Starting':
-        case 'Stopping':
+        case ServiceStatus.Starting:
+        case ServiceStatus.Stopping:
             return 'warn';
-        case 'Stopped':
+        case ServiceStatus.Stopped:
             return 'error';
     }
 }
@@ -41,8 +41,12 @@ const ServiceEntry = ({ serviceName, serviceStatus, onChangeStatus }) => {
     return (
         <li>
             <div className="row">
-                <div className="col-1"><div className={'image-container ' + getImageClassName(serviceStatus)} onClick={() => onChangeStatus(selectNewStatus(serviceStatus))}></div></div>
-                <div className="col-3"><span className={getStatusClassName(serviceStatus)}>{serviceStatus}</span></div>
+                <div className="col-1">
+                    <div className={'image-container ' + getImageClassName(serviceStatus)}
+                        onClick={(e) => { if (!e.target.classList.contains('image-disabled')) onChangeStatus(selectNewStatus(serviceStatus)) }}>
+                    </div>
+                </div>
+                <div className="col-3"><span className={getStatusClassName(serviceStatus)}>{MapServiceStatus(serviceStatus)}</span></div>
                 <div className="col-8">
                     {serviceName}
                 </div>
@@ -53,7 +57,7 @@ const ServiceEntry = ({ serviceName, serviceStatus, onChangeStatus }) => {
 
 ServiceEntry.propTypes = {
     serviceName: PropTypes.string.isRequired,
-    serviceStatus: PropTypes.string.isRequired
+    serviceStatus: PropTypes.number.isRequired
 };
 
 export default ServiceEntry;

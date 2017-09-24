@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { render } from 'react-dom';
 import ServicesManager from './../../../../common/services-manager';
 import ServiceEntry from './serviceEntry';
-import ServiceStatus from './../../../../common/service-status';
+import { ServiceStatus } from './../../../../common/service-status';
 
 class ServiceList extends React.Component {
     constructor(props, context) {
@@ -14,7 +14,13 @@ class ServiceList extends React.Component {
             error: false
         }
 
+        var that = this;
+        this.setNewServices = this.setNewServices.bind(this);
         this.loadServices();
+        
+        this.props.servicesSourcePort.onMessage.addListener(function (eventArgs) {
+            that.setNewServices(eventArgs.services);
+        })
     }
 
     componentWillReceiveProps(newProps) {
@@ -24,12 +30,14 @@ class ServiceList extends React.Component {
     loadServices() {
         var that = this;
         this.manager = new ServicesManager(this.state.hostName);
-        this.manager.getServices(this.state.serviceName).then(function (json) {
-            that.setState({ services: json, error: false });
-        }).catch(function (error) {
+        this.manager.getServices(this.state.serviceName).then(this.setNewServices).catch(function (error) {
             console.log(error);
             that.setState({ error: true });
         });
+    }
+
+    setNewServices(newServices) {
+        this.setState({ services: newServices, error: false });
     }
 
     changeServiceStatus(changedService, newStatus) {

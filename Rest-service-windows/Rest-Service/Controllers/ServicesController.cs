@@ -7,7 +7,7 @@ using Rest_Service.Models;
 
 namespace Rest_Service.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("")]
     public class ServicesController : Controller
     {
         [HttpGet("all/{name}")]

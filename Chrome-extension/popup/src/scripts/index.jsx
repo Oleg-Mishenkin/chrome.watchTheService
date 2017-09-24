@@ -14,7 +14,7 @@ class App extends React.Component {
       isBackgroundUpdate: true,
       serviceName: '',
       hostName: '',
-      services: []
+      services: []      
     }
 
     this.chromeStorage = new ChromeStorage();
@@ -25,8 +25,7 @@ class App extends React.Component {
     this.setChromeStorageCallback = this.setChromeStorageCallback.bind(this);
 
     this.chromeStorage.getAll(this.setChromeStorageCallback);
-
-    chrome.runtime.connect({ name: "port-from-popup" });
+    this.port = chrome.runtime.connect({ name: "port-from-popup" })    
   }
 
   setCurrentServiceName(newName) {
@@ -56,7 +55,7 @@ class App extends React.Component {
         <h4>Start typing service name <br /> (regexp syntax supported)</h4>
         <ValueSearcher valueName={this.state.serviceName} onValueChange={this.setCurrentServiceName} hint="Microsoft*" />
         {shouldRenderList ?
-          <ServiceList serviceName={this.state.serviceName} hostName={this.state.hostName} />
+          <ServiceList serviceName={this.state.serviceName} hostName={this.state.hostName} servicesSourcePort={this.port} />
           : ''
         }
       </div>

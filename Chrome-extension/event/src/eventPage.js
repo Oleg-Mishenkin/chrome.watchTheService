@@ -1,6 +1,6 @@
 import ServicesManager from './../../common/services-manager';
 import ChromeStorage from './../../common/chrome-storage';
-import ServiceStatus from './../../common/service-status';
+import { ServiceStatus } from './../../common/service-status';
 
 var isActive = false;
 var port;
@@ -16,10 +16,11 @@ chrome.alarms.onAlarm.addListener(function () {
     var storage = new ChromeStorage();
 
     storage.getAll(function (settings) {
-        var manager = new ServicesManager(settings.host || 'localhost');
+        var manager = new ServicesManager(settings.hostName || 'localhost');
 
         if (isActive || settings.isBackgroundUpdate) {
             manager.getServices(settings.serviceName).then(function (json) {
+                if (isActive) port.postMessage({services: json});
                 var stoppedServicesNum = json.reduce(function (accumulator, currentValue) {
                     if (currentValue.status == ServiceStatus.Stopped)
                         return accumulator + 1;

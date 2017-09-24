@@ -16,7 +16,7 @@ class ServicesManager {
             },
             body: JSON.stringify({ 'name': serviceName })
         };
-        return fetch(this.appendUrl(this.host, `start`));
+        return fetch(this.appendUrl(this.host, `start`), options);
     }
 
     stop(serviceName) {
@@ -28,7 +28,7 @@ class ServicesManager {
             },
             body: JSON.stringify({ 'name': serviceName })
         };
-        return fetch(this.appendUrl(this.host, `stop`));
+        return fetch(this.appendUrl(this.host, `stop`), options);
     }
 
     getServices(namepattern) {
