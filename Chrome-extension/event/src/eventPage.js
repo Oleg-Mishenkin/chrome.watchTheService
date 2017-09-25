@@ -20,7 +20,7 @@ chrome.alarms.onAlarm.addListener(function () {
 
         if (isActive || settings.isBackgroundUpdate) {
             manager.getServices(settings.serviceName).then(function (json) {
-                if (isActive) port.postMessage({services: json});
+                if (isActive) port.postMessage({ services: json });
                 var stoppedServicesNum = json.reduce(function (accumulator, currentValue) {
                     if (currentValue.status == ServiceStatus.Stopped)
                         return accumulator + 1;
@@ -29,6 +29,7 @@ chrome.alarms.onAlarm.addListener(function () {
 
                 if (stoppedServicesNum)
                     chrome.browserAction.setBadgeText({ text: stoppedServicesNum.toString() });
+                else chrome.browserAction.setBadgeText({ text: '' });
             });
         }
         else
